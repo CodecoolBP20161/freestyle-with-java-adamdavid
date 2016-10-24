@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        GamePlay gamePlay = new GamePlay();
-        frame.setBounds(10, 10, 800, 600);
+        frame.setBounds(10, 10, 840, 630);
+        GamePlay gamePlay = new GamePlay(frame.getWidth(), frame.getHeight());
         frame.setBackground(Color.WHITE);
         frame.setResizable(false);
         frame.setVisible(true);
