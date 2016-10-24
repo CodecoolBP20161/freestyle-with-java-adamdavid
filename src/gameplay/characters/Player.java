@@ -9,28 +9,14 @@ import java.lang.*;
  * Created by Cave on 2016.10.22..
  */
 public class Player extends Character {
-    private int posX;
-    private int posY;
-    private int speed;
 
-    public int getPosX() {
-        return posX;
+    public Player(int posX, int posY, int speed, String imageSource) {
+        super(posX, posY, speed, imageSource);
     }
 
-    public int getPosY() {
-        return posY;
+    public Player(int posX, int posY, String imageSource) {
+        super(posX, posY, imageSource);
     }
-
-
-    public Player(int posX, int posY, int speed) {
-        super(posX, posY, speed);
-    }
-
-
-    public Player(int posX, int posY) {
-        super(posX, posY);
-    }
-
 
     @Override
     void moving(KeyEvent e) {

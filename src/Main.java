@@ -12,11 +12,11 @@ public class Main {
         JFrame frame = new JFrame();
         GamePlay gamePlay = new GamePlay();
         frame.setBounds(10, 10, 800, 600);
-        frame.setBackground(Color.darkGray);
+        frame.setBackground(Color.WHITE);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.add(gamePlay);
+        frame.add(gamePlay);
 
     }
 }
