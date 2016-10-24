@@ -11,20 +11,31 @@ import java.lang.*;
  */
 public class Player extends Character {
 
-    public Player(int posX, int posY, int speed, String imageSource) {
-        super(posX, posY, speed, imageSource);
+    private int stepCounter = 0;
+
+    public Player(int posX, int posY, int speed, String... moveFrameArray) {
+        super(posX, posY, speed, moveFrameArray);
     }
 
-    public Player(int posX, int posY, String imageSource) {
-        super(posX, posY, imageSource);
+    public Player(int posX, int posY, String... moveFrameArray) {
+        super(posX, posY, moveFrameArray);
     }
 
 
     public void moving() {
+        if (stepCounter == 3) {
+            shiftMovementFrame();
+            stepCounter = 0;
+        }
         if (!leftEdgeCollision() && left) posX -= speed;
         if (!rightEdgeCollision() && right) posX += speed;
         if (!topEdgeCollision() && up) posY -= speed;
         if (!bottomEdgeCollision() && down) posY += speed;
+        if (left || right || up || down) stepCounter++;
+        if (!left && !right && !up && !down) {
+            toggleStandingFrame();
+            stepCounter = 0;
+        }
     }
 
     public void keyPress(KeyEvent e) {
@@ -71,10 +82,7 @@ public class Player extends Character {
 
     private boolean bottomEdgeCollision() {
         int windowHeight = JFrame.getWindows()[0].getHeight();
-        if (posX > windowHeight - 41) return true;
+        if (posY > windowHeight - 41) return true;
         return false;
-    }
-
-    public void method() {
     }
 }

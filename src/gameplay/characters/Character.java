@@ -11,6 +11,8 @@ abstract class Character {
     protected int posY;
     protected int speed;
     private Image characterImage;
+    private Image[] movementFrames = null;
+    private int recentMovementFrameIndex = 0;
     protected boolean right = false;
     protected boolean left = false;
     protected boolean up = false;
@@ -48,18 +50,45 @@ abstract class Character {
         return down;
     }
 
-    public Character(int posX, int posY, int speed, String imageSource) {
+    public void setCharacterImage(Image characterImage) {
+        this.characterImage = characterImage;
+    }
+
+    public Character(int posX, int posY, int speed, String... movementFramesArray) {
         this.posX = posX;
         this.posY = posY;
         this.speed = speed;
-        this.characterImage = new ImageIcon(imageSource).getImage();
+        this.movementFrames = new Image[movementFramesArray.length];
+        for (int i = 0; i < movementFramesArray.length; i++) {
+            this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
+        }
+        this.characterImage = movementFrames[0];
     }
 
-    public Character(int posX, int posY, String imageSource) {
+    public Character(int posX, int posY, String... movementFramesArray) {
         this.posX = posX;
         this.posY = posY;
         this.speed = 1;
-        this.characterImage = new ImageIcon(imageSource).getImage();
+        this.movementFrames = new Image[movementFramesArray.length];
+        for (int i = 0; i < movementFramesArray.length; i++) {
+            this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
+        }
+        this.characterImage = movementFrames[0];
+
+    }
+
+    protected void shiftMovementFrame() {
+        if (recentMovementFrameIndex == movementFrames.length - 1) {
+            recentMovementFrameIndex = 0;
+        } else {
+            recentMovementFrameIndex++;
+        }
+        setCharacterImage(movementFrames[recentMovementFrameIndex]);
+    }
+
+    protected void toggleStandingFrame() {
+        recentMovementFrameIndex = 0;
+        setCharacterImage(movementFrames[recentMovementFrameIndex]);
     }
 
 
