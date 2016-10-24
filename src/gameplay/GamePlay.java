@@ -1,6 +1,9 @@
 package gameplay;
 
 import gameplay.characters.Player;
+import gameplay.environment.GameMap;
+import oracle.jrockit.jfr.JFR;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,13 +13,16 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     private Timer timer;
     private int delay;
     private Player player;
+    private GameMap gameMap;
 
-    public GamePlay() {
-        this.delay = 60;
+
+    public GamePlay(int windowWidth, int windowHeight){
+        this.delay = 40;
         this.player = new Player(24, 74, 10,
-                "src/gameplay/characters/assets/duck01.png",
-                "src/gameplay/characters/assets/duck02.png",
-                "src/gameplay/characters/assets/duck03.png");
+                "assets/characters/duck01.png",
+                "assets/characters/duck02.png",
+                "assets/characters/duck03.png");
+        this.gameMap = new GameMap(windowWidth, windowHeight);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -28,8 +34,8 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        gameMap.drawMap(g2d, this);
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
-
         // test directions
         g.setColor(Color.black);
         g.setFont(new Font("arial", Font.PLAIN, 14));
