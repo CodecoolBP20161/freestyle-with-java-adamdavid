@@ -26,6 +26,12 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
+        g.setColor(Color.black);
+        g.setFont(new Font("arial", Font.PLAIN, 14));
+        g.drawString("left: " + player.isLeft(), 600, 25);
+        g.drawString("right: " + player.isRight(), 600, 50);
+        g.drawString("up: " + player.isUp(), 600, 75);
+        g.drawString("down: " + player.isDown(), 600, 100);
         Toolkit.getDefaultToolkit().sync();
     }
 

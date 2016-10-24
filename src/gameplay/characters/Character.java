@@ -10,9 +10,11 @@ abstract class Character {
     protected int posX;
     protected int posY;
     protected int speed;
-    protected int dx;
-    protected int dy;
     private Image characterImage;
+    protected boolean right = false;
+    protected boolean left = false;
+    protected boolean up = false;
+    protected boolean down = false;
 
     public int getPosX() {
         return posX;
@@ -30,6 +32,22 @@ abstract class Character {
         return characterImage;
     }
 
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
     public Character(int posX, int posY, int speed, String imageSource) {
         this.posX = posX;
         this.posY = posY;
@@ -43,8 +61,6 @@ abstract class Character {
         this.speed = 1;
         this.characterImage = new ImageIcon(imageSource).getImage();
     }
-
-    abstract boolean checkMapEdge();
 
 
 }

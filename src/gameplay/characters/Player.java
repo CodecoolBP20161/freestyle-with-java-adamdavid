@@ -2,6 +2,7 @@ package gameplay.characters;
 
 import gameplay.controller.ControllerState;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.lang.*;
 
@@ -20,35 +21,57 @@ public class Player extends Character {
 
 
     public void moving() {
-        posX += dx;
-        posY += dy;
+        if (!leftEdgeCollision() && left) posX -= speed;
+        if (!rightEdgeCollision() && right) posX += speed;
+        if (!topEdgeCollision() && up) posY -= speed;
+        if (!bottomEdgeCollision() && down) posY += speed;
     }
 
     public void keyPress(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_RIGHT: dx = speed; break;
-            case KeyEvent.VK_LEFT: dx = -1 * speed; break;
-            case KeyEvent.VK_UP: dy = -1 * speed; break;
-            case KeyEvent.VK_DOWN: dy = speed; break;
+            case KeyEvent.VK_RIGHT:
+                right = true;
+                break;
+            case KeyEvent.VK_LEFT:
+                left = true;
+                break;
+            case KeyEvent.VK_UP:
+                up = true;
+                break;
+            case KeyEvent.VK_DOWN:
+                down = true;
+                break;
         }
     }
 
     public void keyRelease(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_RIGHT: dx = 0; break;
-            case KeyEvent.VK_LEFT: dx = 0; break;
-            case KeyEvent.VK_UP: dy = 0; break;
-            case KeyEvent.VK_DOWN: dy = 0; break;
+            case KeyEvent.VK_RIGHT: right = false; break;
+            case KeyEvent.VK_LEFT: left = false; break;
+            case KeyEvent.VK_UP: up = false; break;
+            case KeyEvent.VK_DOWN: down = false; break;
         }
     }
 
-    @Override
-    boolean checkMapEdge() {
-        //TODO: check if the player is at the edge of the map. If yes return true if not return false.
+    private boolean leftEdgeCollision() {
+        if (posX < 1) return true;
+        return false;
+    }
 
-        // if you feel the power then implement this private function into the moving method,
-        // so the player can't move further than the edge coords of the map :)
+    private boolean rightEdgeCollision() {
+        int windowWidth = JFrame.getWindows()[0].getWidth();
+        if (posX > windowWidth - 41) return true;
+        return false;
+    }
 
+    private boolean topEdgeCollision() {
+        if (posY < 1) return true;
+        return false;
+    }
+
+    private boolean bottomEdgeCollision() {
+        int windowHeight = JFrame.getWindows()[0].getHeight();
+        if (posX > windowHeight - 41) return true;
         return false;
     }
 
