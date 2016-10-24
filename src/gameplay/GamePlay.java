@@ -2,7 +2,6 @@ package gameplay;
 
 import gameplay.characters.Player;
 import gameplay.environment.GameMap;
-import oracle.jrockit.jfr.JFR;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,9 +33,16 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        // draw the map
+        g2d.drawImage((new ImageIcon("assets/environment/background.PNG")).getImage(), 0, 0,
+                gameMap.getWindowWidth(), gameMap.getWindowHeight(), this);
         gameMap.drawMap(g2d, this);
+
+        // draw the player
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
-        // test directions
+
+        // test rows
         g.setColor(Color.black);
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("left: " + player.isLeft(), 600, 25);
@@ -47,6 +53,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         Toolkit.getDefaultToolkit().sync();
     }
 
+    // run on 'time tick'
     @Override
     public void actionPerformed(ActionEvent e) {
         player.moving();
@@ -57,11 +64,13 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void keyTyped(KeyEvent e) {
     }
 
+    // handle key pressing events
     @Override
     public void keyPressed(KeyEvent e) {
         player.keyPress(e);
     }
 
+    // handle key release events
     @Override
     public void keyReleased(KeyEvent e) {
         player.keyRelease(e);
