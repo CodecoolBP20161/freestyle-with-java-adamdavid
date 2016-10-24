@@ -18,20 +18,29 @@ public class Player extends Character {
         super(posX, posY, imageSource);
     }
 
-    @Override
-    void moving(KeyEvent e) {
-//        switch (e.getKeyCode()) {
-//            case KeyEvent.VK_RIGHT: moveRight(); break;
-//            case KeyEvent.VK_LEFT: moveLeft(); break;
-//            case KeyEvent.VK_UP: moveUp(); break;
-//            case KeyEvent.VK_DOWN: moveDown(); break;
-//        }
-        // TODO: Move to the given direction ("right", "left", "up", "right") in the coord system by the given speed.
-        // Example: if posX = 0 and the player moves to the right then the new posX will be 0 + speed
-        // the x=0 and the y=0 are at the upper left corner of the field
-        // No display yet, so test it manually :)
+
+    public void moving() {
+        posX += dx;
+        posY += dy;
     }
 
+    public void keyPress(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_RIGHT: dx = speed; break;
+            case KeyEvent.VK_LEFT: dx = -1 * speed; break;
+            case KeyEvent.VK_UP: dy = -1 * speed; break;
+            case KeyEvent.VK_DOWN: dy = speed; break;
+        }
+    }
+
+    public void keyRelease(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_RIGHT: dx = 0; break;
+            case KeyEvent.VK_LEFT: dx = 0; break;
+            case KeyEvent.VK_UP: dy = 0; break;
+            case KeyEvent.VK_DOWN: dy = 0; break;
+        }
+    }
 
     @Override
     boolean checkMapEdge() {

@@ -1,16 +1,18 @@
 package gameplay.characters;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
+import java.awt.*;
 
 /**
  * Created by cave on 2016.10.24..
  */
 abstract class Character {
-    private int posX;
-    private int posY;
-    private int speed;
-    private ImageIcon characterImage;
+    protected int posX;
+    protected int posY;
+    protected int speed;
+    protected int dx;
+    protected int dy;
+    private Image characterImage;
 
     public int getPosX() {
         return posX;
@@ -24,7 +26,7 @@ abstract class Character {
         return speed;
     }
 
-    public ImageIcon getCharacterImage() {
+    public Image getCharacterImage() {
         return characterImage;
     }
 
@@ -32,17 +34,15 @@ abstract class Character {
         this.posX = posX;
         this.posY = posY;
         this.speed = speed;
-        this.characterImage = new ImageIcon(imageSource);
+        this.characterImage = new ImageIcon(imageSource).getImage();
     }
 
     public Character(int posX, int posY, String imageSource) {
         this.posX = posX;
         this.posY = posY;
         this.speed = 1;
-        this.characterImage = new ImageIcon(imageSource);
+        this.characterImage = new ImageIcon(imageSource).getImage();
     }
-
-    abstract void moving(KeyEvent e);
 
     abstract boolean checkMapEdge();
 
