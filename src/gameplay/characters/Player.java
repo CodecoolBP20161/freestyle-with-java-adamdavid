@@ -1,7 +1,5 @@
 package gameplay.characters;
 
-import gameplay.controller.ControllerState;
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.lang.*;
@@ -31,14 +29,14 @@ public class Player extends Character {
         else if (!leftEdgeCollision() && left) posX -= (int) Math.ceil((double) speed / Math.sqrt(2));
 
         if (!rightEdgeCollision() && right && !up && !down) posX += speed;
-        else if (!leftEdgeCollision() && right) posX += (int) Math.ceil((double) speed /  Math.sqrt(2));
+        else if (!rightEdgeCollision() && right) posX += (int) Math.ceil((double) speed /  Math.sqrt(2));
 
 
         if (!topEdgeCollision() && up && !left && !right) posY -= speed;
-        else if (!leftEdgeCollision() && up) posY -= (int) Math.ceil((double) speed /  Math.sqrt(2));
+        else if (!topEdgeCollision() && up) posY -= (int) Math.ceil((double) speed /  Math.sqrt(2));
 
         if (!bottomEdgeCollision() && down && !left && !right) posY += speed;
-        else if (!leftEdgeCollision() && down) posY += (int) Math.ceil((double) speed /  Math.sqrt(2));
+        else if (!bottomEdgeCollision() && down) posY += (int) Math.ceil((double) speed /  Math.sqrt(2));
 
         if (left || right || up || down) stepCounter++;
         if (!left && !right && !up && !down) {
