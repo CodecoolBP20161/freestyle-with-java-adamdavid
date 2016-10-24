@@ -27,10 +27,19 @@ public class Player extends Character {
             shiftMovementFrame();
             stepCounter = 0;
         }
-        if (!leftEdgeCollision() && left) posX -= speed;
-        if (!rightEdgeCollision() && right) posX += speed;
-        if (!topEdgeCollision() && up) posY -= speed;
-        if (!bottomEdgeCollision() && down) posY += speed;
+        if (!leftEdgeCollision() && left && !up && !down) posX -= speed;
+        else if (!leftEdgeCollision() && left) posX -= (int) Math.ceil((double) speed / Math.sqrt(2));
+
+        if (!rightEdgeCollision() && right && !up && !down) posX += speed;
+        else if (!leftEdgeCollision() && right) posX += (int) Math.ceil((double) speed /  Math.sqrt(2));
+
+
+        if (!topEdgeCollision() && up && !left && !right) posY -= speed;
+        else if (!leftEdgeCollision() && up) posY -= (int) Math.ceil((double) speed /  Math.sqrt(2));
+
+        if (!bottomEdgeCollision() && down && !left && !right) posY += speed;
+        else if (!leftEdgeCollision() && down) posY += (int) Math.ceil((double) speed /  Math.sqrt(2));
+
         if (left || right || up || down) stepCounter++;
         if (!left && !right && !up && !down) {
             toggleStandingFrame();
