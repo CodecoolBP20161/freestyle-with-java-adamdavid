@@ -13,6 +13,8 @@ import java.lang.*;
 public class Player extends Character {
 
     private int stepCounter = 0;
+    private boolean planting = false;
+    private long plantingStartTime = 0;
 
     public Player(int posX, int posY, int speed, int inCellX, int inCellY, String... moveFrameArray) {
         super(posX, posY, speed, inCellX, inCellY, moveFrameArray);
@@ -22,6 +24,9 @@ public class Player extends Character {
         super(posX, posY, inCellX, inCellY, moveFrameArray);
     }
 
+    public boolean isPlanting() {
+        return planting;
+    }
 
     public void moving() {
         if (stepCounter == 3) {
@@ -75,21 +80,24 @@ public class Player extends Character {
     }
 
     public void keyPress(KeyEvent e) {
-        switch (e.getKeyCode()) {
+        int keyCode = e.getKeyCode();
+        if (keyCode == KeyEvent.VK_SPACE && !left && !right && !up && !down) startPlanting();
+        switch (keyCode) {
             case KeyEvent.VK_RIGHT:
+                stopPlanting();
                 right = true;
                 break;
             case KeyEvent.VK_LEFT:
+                stopPlanting();
                 left = true;
                 break;
             case KeyEvent.VK_UP:
+                stopPlanting();
                 up = true;
                 break;
             case KeyEvent.VK_DOWN:
+                stopPlanting();
                 down = true;
-                break;
-            case KeyEvent.VK_SPACE:
-                startPlanting();
                 break;
         }
     }
@@ -100,10 +108,28 @@ public class Player extends Character {
             case KeyEvent.VK_LEFT: left = false; break;
             case KeyEvent.VK_UP: up = false; break;
             case KeyEvent.VK_DOWN: down = false; break;
+            case KeyEvent.VK_SPACE: stopPlanting(); break;
         }
     }
 
     private void startPlanting() {
+        GameMap gameMap = GameMap.getInstance();
+        BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
+        if (cell.getStatus().equals("planted")) stopPlanting();
+        else Planting();
+    }
+
+    private void Planting() {
+        planting = true;
+        if (plantingStartTime == 0) plantingStartTime = System.currentTimeMillis();
+        if (System.currentTimeMillis() - plantingStartTime > 1500) {
+            finishPlanting();
+        }
+    }
+
+    private void finishPlanting() {
+        planting = false;
+        plantingStartTime = 0;
         GameMap gameMap = GameMap.getInstance();
         BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
         cell.setStatus("planted");
@@ -111,6 +137,7 @@ public class Player extends Character {
     }
 
     private void stopPlanting() {
-
+        planting = false;
+        plantingStartTime = 0;
     }
 }
