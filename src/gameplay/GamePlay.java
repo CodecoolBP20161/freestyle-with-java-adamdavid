@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.characters.Enemy;
 import gameplay.characters.Player;
 import gameplay.environment.GameMap;
 import gameplay.environment.Plant;
@@ -13,6 +14,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     private Timer timer;
     private int delay;
     private Player player;
+    private Enemy enemy;
     private GameMap gameMap;
 
 
@@ -43,10 +45,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 "assets/characters/right_duck/harvesting03.png"
         };
 
+        // make player object
         this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
                 gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
                 leftSprites, rightSprites,
                 leftPlantingSprites, rightPlantingSprites);
+
+
+        String[] rightEnemySprites = new String[] {"assets/characters/drugSlugRight.png"};
+        String[] leftEnemySprites = new String[] {"assets/characters/drugSlugLeft.png"};
+        //make enemy
+        this.enemy  = new Enemy(this.player,
+                gameMap.getBackgroundCells()[0][0].getPosX(),
+                gameMap.getBackgroundCells()[0][0].getPosY(),
+                3, 0, 0,
+                leftEnemySprites, rightEnemySprites);
+
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -64,8 +78,9 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 gameMap.getWindowWidth(), gameMap.getWindowHeight(), this);
         gameMap.drawMap(g2d, this);
 
-        // draw the player
+        // draw the player and enemy
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
+        g2d.drawImage(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), this);
 
         // test rows
         g.setFont(new Font("arial", Font.PLAIN, 14));
@@ -76,7 +91,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.drawString("up: " + player.isUp(), 600, 125);
         g.drawString("down: " + player.isDown(), 600, 150);
         g.setColor(Color.red);
-        g.drawString("index: " + player.getRecentPlantingFrameIndex(), 600, 400);
+        g.drawString("enemy speed: " + enemy.getOwnSpeed(), 600, 400);
         if (Plant.plantedPlants.size() > 0) {
             g.drawString("plantstatus: " + Plant.plantedPlants.get(0).getStatus(), 600, 175);
             g.drawString("plantcounter: " + Plant.plantedPlants.get(0).getGrowingCounter(), 600, 20);
@@ -92,9 +107,13 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.moving();
+        enemy.moving();
         player.directionCheck();
+//        enemy.directionCheck();
         player.checkPosition();
+//        enemy.checkPosition();
         player.plantingDirectionCheck();
+
         Plant.growingPlants();
         player.harvestIfCould();
         repaint();

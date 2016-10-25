@@ -146,7 +146,7 @@ public class Player extends Character {
         if (plantingCounter % 10 == 0) shiftPlantingFrameIndex();
         plantingCounter++;
         if (plantingStartTime == 0) plantingStartTime = System.currentTimeMillis();
-        if (System.currentTimeMillis() - plantingStartTime > 2000) {
+        if (System.currentTimeMillis() - plantingStartTime > 1000) {
             finishPlanting();
         }
     }
