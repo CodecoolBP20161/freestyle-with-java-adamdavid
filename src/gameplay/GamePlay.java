@@ -17,11 +17,12 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
     public GamePlay(int windowWidth, int windowHeight){
         this.delay = 40;
-        this.player = new Player(24, 74, 10,
+        this.gameMap = new GameMap(windowWidth, windowHeight);
+        this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
+                gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
                 "assets/characters/duck01.png",
                 "assets/characters/duck02.png",
                 "assets/characters/duck03.png");
-        this.gameMap = new GameMap(windowWidth, windowHeight);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -43,12 +44,9 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
 
         // test rows
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
-        g.drawString("left: " + player.isLeft(), 600, 25);
-        g.drawString("right: " + player.isRight(), 600, 50);
-        g.drawString("up: " + player.isUp(), 600, 75);
-        g.drawString("down: " + player.isDown(), 600, 100);
+        g.drawString("cell: " + player.getInCell()[0] + " " + player.getInCell()[1], 600, 25);
 
         Toolkit.getDefaultToolkit().sync();
     }
@@ -57,6 +55,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.moving();
+        player.checkPosition(gameMap);
         repaint();
     }
 

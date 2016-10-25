@@ -11,12 +11,12 @@ public class Player extends Character {
 
     private int stepCounter = 0;
 
-    public Player(int posX, int posY, int speed, String... moveFrameArray) {
-        super(posX, posY, speed, moveFrameArray);
+    public Player(int posX, int posY, int speed, int inCellX, int inCellY, String... moveFrameArray) {
+        super(posX, posY, speed, inCellX, inCellY, moveFrameArray);
     }
 
-    public Player(int posX, int posY, String... moveFrameArray) {
-        super(posX, posY, moveFrameArray);
+    public Player(int posX, int posY, int inCellX, int inCellY, String... moveFrameArray) {
+        super(posX, posY, inCellX, inCellY, moveFrameArray);
     }
 
 
@@ -27,22 +27,48 @@ public class Player extends Character {
         }
         if (!leftEdgeCollision() && left && !up && !down) posX -= speed;
         else if (!leftEdgeCollision() && left) posX -= (int) Math.ceil((double) speed / Math.sqrt(2));
+        else if (leftEdgeCollision()) posX = 0;
 
         if (!rightEdgeCollision() && right && !up && !down) posX += speed;
         else if (!rightEdgeCollision() && right) posX += (int) Math.ceil((double) speed /  Math.sqrt(2));
+        else if (rightEdgeCollision()) posX = JFrame.getWindows()[0].getWidth() - spriteWidth;
 
 
         if (!topEdgeCollision() && up && !left && !right) posY -= speed;
         else if (!topEdgeCollision() && up) posY -= (int) Math.ceil((double) speed /  Math.sqrt(2));
+        else if (topEdgeCollision()) posY = 0;
 
         if (!bottomEdgeCollision() && down && !left && !right) posY += speed;
         else if (!bottomEdgeCollision() && down) posY += (int) Math.ceil((double) speed /  Math.sqrt(2));
+        else if (bottomEdgeCollision()) posY = JFrame.getWindows()[0].getHeight() - (spriteHeight + 5);
 
         if (left || right || up || down) stepCounter++;
         if (!left && !right && !up && !down) {
             toggleStandingFrame();
             stepCounter = 0;
         }
+    }
+
+    private boolean leftEdgeCollision() {
+        if (posX < 1) return true;
+        return false;
+    }
+
+    private boolean rightEdgeCollision() {
+        int windowWidth = JFrame.getWindows()[0].getWidth();
+        if (posX > windowWidth - (spriteWidth + 10)) return true;
+        return false;
+    }
+
+    private boolean topEdgeCollision() {
+        if (posY < 1) return true;
+        return false;
+    }
+
+    private boolean bottomEdgeCollision() {
+        int windowHeight = JFrame.getWindows()[0].getHeight();
+        if (posY > windowHeight - (spriteHeight + 3 + speed)) return true;
+        return false;
     }
 
     public void keyPress(KeyEvent e) {
@@ -69,27 +95,5 @@ public class Player extends Character {
             case KeyEvent.VK_UP: up = false; break;
             case KeyEvent.VK_DOWN: down = false; break;
         }
-    }
-
-    private boolean leftEdgeCollision() {
-        if (posX < 1) return true;
-        return false;
-    }
-
-    private boolean rightEdgeCollision() {
-        int windowWidth = JFrame.getWindows()[0].getWidth();
-        if (posX > windowWidth - 41) return true;
-        return false;
-    }
-
-    private boolean topEdgeCollision() {
-        if (posY < 1) return true;
-        return false;
-    }
-
-    private boolean bottomEdgeCollision() {
-        int windowHeight = JFrame.getWindows()[0].getHeight();
-        if (posY > windowHeight - 41) return true;
-        return false;
     }
 }
