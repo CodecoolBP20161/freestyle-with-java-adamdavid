@@ -1,5 +1,8 @@
 package gameplay.characters;
 
+import gameplay.environment.BackgroundCell;
+import gameplay.environment.GameMap;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.lang.*;
@@ -85,6 +88,9 @@ public class Player extends Character {
             case KeyEvent.VK_DOWN:
                 down = true;
                 break;
+            case KeyEvent.VK_SPACE:
+                startPlanting();
+                break;
         }
     }
 
@@ -95,5 +101,16 @@ public class Player extends Character {
             case KeyEvent.VK_UP: up = false; break;
             case KeyEvent.VK_DOWN: down = false; break;
         }
+    }
+
+    private void startPlanting() {
+        GameMap gameMap = GameMap.getInstance();
+        BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
+        cell.setStatus("planted");
+        cell.setImage("assets/environment/plantedCell.png");
+    }
+
+    private void stopPlanting() {
+
     }
 }

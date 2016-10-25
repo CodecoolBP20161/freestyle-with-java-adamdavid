@@ -17,7 +17,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
     public GamePlay(int windowWidth, int windowHeight){
         this.delay = 40;
-        this.gameMap = new GameMap(windowWidth, windowHeight);
+        this.gameMap = GameMap.getInstance(windowWidth, windowHeight);
         this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
                 gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
                 "assets/characters/duck01.png",

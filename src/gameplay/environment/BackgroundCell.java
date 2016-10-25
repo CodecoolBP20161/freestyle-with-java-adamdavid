@@ -46,4 +46,12 @@ public class BackgroundCell {
     public String getStatus() {
         return status;
     }
+
+    public void setImage(String imageSource) {
+        this.image = new ImageIcon(imageSource).getImage();
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -1,23 +1,40 @@
 package gameplay.environment;
-
 import gameplay.GamePlay;
-
-import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by cave on 2016.10.24..
- */
+
+// gameMap singleton
 public class GameMap {
+    private static GameMap instance = null;
 
     private BackgroundCell[][] backgroundCells;
     private int windowHeight;
     private int windowWidth;
 
-    public GameMap(int windowWidth, int windowHeight) {
+    private GameMap(int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         this.backgroundCells = generateCells();
+    }
+
+    private GameMap() {
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+        this.backgroundCells = generateCells();
+    }
+
+    public static GameMap getInstance(int windowWidth, int windowHeight) {
+        if(instance == null) {
+            instance = new GameMap(windowWidth, windowHeight);
+        }
+        return instance;
+    }
+
+    public static GameMap getInstance() {
+        if(instance == null) {
+            instance = new GameMap();
+        }
+        return instance;
     }
 
     // getters
@@ -66,8 +83,4 @@ public class GameMap {
             }
         }
     }
-
-
-
-
 }
