@@ -17,7 +17,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
     public GamePlay(int windowWidth, int windowHeight){
         this.delay = 40;
-        this.gameMap = new GameMap(windowWidth, windowHeight);
+        this.gameMap = GameMap.getInstance(windowWidth, windowHeight);
         this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
                 gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
                 "assets/characters/duck01.png",
@@ -47,6 +47,11 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("cell: " + player.getInCell()[0] + " " + player.getInCell()[1], 600, 25);
+        g.drawString("planting: " + player.isPlanting(), 600, 50);
+        g.drawString("left: " + player.isLeft(), 600, 75);
+        g.drawString("right: " + player.isRight(), 600, 100);
+        g.drawString("up: " + player.isUp(), 600, 125);
+        g.drawString("down: " + player.isDown(), 600, 150);
 
         Toolkit.getDefaultToolkit().sync();
     }
@@ -55,7 +60,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.moving();
-        player.checkPosition(gameMap);
+        player.checkPosition();
         repaint();
     }
 

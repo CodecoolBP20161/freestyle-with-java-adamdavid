@@ -110,7 +110,8 @@ abstract class Character {
         setCharacterImage(movementFrames[recentMovementFrameIndex]);
     }
 
-    public void checkPosition(GameMap gameMap) {
+    public void checkPosition() {
+        GameMap gameMap = GameMap.getInstance();
         int firstRowToCheck = (inCell[0] == 0) ? 0 : inCell[0] - 1;
         int lastRowToCheck = (inCell[0] == gameMap.getBackgroundCells().length - 1) ? inCell[0] : inCell[0] + 1;
         int firstColumnToCheck = (inCell[1] == 0) ? 0 : inCell[1] - 1;
@@ -119,9 +120,10 @@ abstract class Character {
         for (int i = firstRowToCheck; i <= lastRowToCheck; i++) {
             for (int j = firstColumnToCheck; j <= lastColumnToCheck; j++) {
                 BackgroundCell cell = gameMap.getBackgroundCells()[i][j];
+
                 int[] playerFoot = {posX + spriteWidth / 2, posY + spriteHeight};
-                if ((playerFoot[0] > cell.getPosX()) && (playerFoot[0] < (cell.getPosX() + cell.getWidth())) &&
-                        (playerFoot[1] > cell.getPosY() && playerFoot[1] < cell.getPosY() + cell.getHeight())) {
+                if ((playerFoot[0] >= cell.getPosX()) && (playerFoot[0] <= (cell.getPosX() + cell.getWidth())) &&
+                        (playerFoot[1] >= cell.getPosY() && playerFoot[1] <= cell.getPosY() + cell.getHeight())) {
                     inCell[0] = i;
                     inCell[1] = j;
                     return;
