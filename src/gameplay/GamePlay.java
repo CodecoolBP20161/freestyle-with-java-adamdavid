@@ -31,9 +31,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 "assets/characters/left_duck/duck02.png",
                 "assets/characters/left_duck/duck03.png"
         };
+        String[] leftPlantingSprites = new String[] {
+                "assets/characters/left_duck/harvesting01.png",
+                "assets/characters/left_duck/harvesting02.png",
+                "assets/characters/left_duck/harvesting03.png"
+        };
+
+        String[] rightPlantingSprites = new String[] {
+                "assets/characters/right_duck/harvesting01.png",
+                "assets/characters/right_duck/harvesting02.png",
+                "assets/characters/right_duck/harvesting03.png"
+        };
 
         this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
-                gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5, leftSprites, rightSprites);
+                gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
+                leftSprites, rightSprites,
+                leftPlantingSprites, rightPlantingSprites);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -63,13 +76,13 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.drawString("up: " + player.isUp(), 600, 125);
         g.drawString("down: " + player.isDown(), 600, 150);
         g.setColor(Color.red);
+        g.drawString("index: " + player.getRecentPlantingFrameIndex(), 600, 400);
         if (Plant.plantedPlants.size() > 0) {
             g.drawString("plantstatus: " + Plant.plantedPlants.get(0).getStatus(), 600, 175);
             g.drawString("plantcounter: " + Plant.plantedPlants.get(0).getGrowingCounter(), 600, 20);
             g.drawString("plantcellx: " + Plant.plantedPlants.get(0).getInCell()[0], 600, 225);
             g.drawString("plantcelly: " + Plant.plantedPlants.get(0).getInCell()[1], 600, 250);
             g.drawString("plantcelly: " + System.currentTimeMillis(), 600, 300);
-            g.drawString("plantgrowing: " + (System.currentTimeMillis() - Plant.plantedPlants.get(0).getGrowingCounter()), 600, 325);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -81,6 +94,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         player.moving();
         player.directionCheck();
         player.checkPosition();
+        player.plantingDirectionCheck();
         Plant.growingPlants();
         player.harvestIfCould();
         repaint();

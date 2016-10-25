@@ -15,7 +15,7 @@ abstract class Character {
     protected int spriteWidth = 40;
     protected int spriteHeight = 40;
     protected int speed;
-    private Image characterImage;
+    protected Image characterImage;
     private Image[] leftMovementFrames = null;
     private Image[] rightMovementFrames = null;
     private Image[] movementFrames = null;
