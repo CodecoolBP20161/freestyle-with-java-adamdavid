@@ -8,9 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.lang.*;
 
-/**
- * Created by Cave on 2016.10.22..
- */
+
 public class Player extends Character {
 
 
@@ -61,7 +59,7 @@ public class Player extends Character {
 
         if (!rightEdgeCollision() && right && !up && !down) posX += speed;
         else if (!rightEdgeCollision() && right) posX += (int) Math.ceil((double) speed /  Math.sqrt(2));
-        else if (rightEdgeCollision()) posX = JFrame.getWindows()[0].getWidth() - spriteWidth;
+        else if (rightEdgeCollision()) posX = gameMap.getWindowWidth() - characterImage.getWidth(null);
 
 
         if (!topEdgeCollision() && up && !left && !right) posY -= speed;
@@ -70,7 +68,7 @@ public class Player extends Character {
 
         if (!bottomEdgeCollision() && down && !left && !right) posY += speed;
         else if (!bottomEdgeCollision() && down) posY += (int) Math.ceil((double) speed /  Math.sqrt(2));
-        else if (bottomEdgeCollision()) posY = JFrame.getWindows()[0].getHeight() - (spriteHeight + 5);
+        else if (bottomEdgeCollision()) posY = gameMap.getWindowHeight() - (characterImage.getHeight(null) + 5);
 
         if (left || right || up || down) stepCounter++;
         if (!left && !right && !up && !down && !planting) {
@@ -80,25 +78,21 @@ public class Player extends Character {
     }
 
     private boolean leftEdgeCollision() {
-        if (posX < 1) return true;
-        return false;
+        return posX < 1;
     }
 
     private boolean rightEdgeCollision() {
         int windowWidth = JFrame.getWindows()[0].getWidth();
-        if (posX > windowWidth - (spriteWidth + 10)) return true;
-        return false;
+        return posX > windowWidth - (characterImage.getWidth(null) + 10);
     }
 
     private boolean topEdgeCollision() {
-        if (posY < 1) return true;
-        return false;
+        return posY < 1;
     }
 
     private boolean bottomEdgeCollision() {
         int windowHeight = JFrame.getWindows()[0].getHeight();
-        if (posY > windowHeight - (spriteHeight + 3 + speed)) return true;
-        return false;
+        return posY > windowHeight - (characterImage.getHeight(null) + 3 + speed);
     }
 
     public void keyPress(KeyEvent e) {
@@ -152,7 +146,7 @@ public class Player extends Character {
     }
 
     private void finishPlanting() {
-        resetHarvestAttributes();
+        resetPlantingAttributes();
         BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
         cell.setStatus("planted");
         cell.setImage("assets/environment/plantedCell.png");
@@ -160,10 +154,10 @@ public class Player extends Character {
     }
 
     private void stopPlanting() {
-        resetHarvestAttributes();
+        resetPlantingAttributes();
     }
 
-    protected void shiftPlantingFrameIndex() {
+    private void shiftPlantingFrameIndex() {
         if (recentPlantingFrameIndex == plantingFrames.length - 1) {
             recentPlantingFrameIndex = 0;
         } else {
@@ -176,37 +170,10 @@ public class Player extends Character {
         else if (right) plantingFrames = rightPlantingFrames;
     }
 
-    private void resetHarvestAttributes() {
+    private void resetPlantingAttributes() {
         plantingCounter = 1;
         recentPlantingFrameIndex = 0;
         planting = false;
         plantingStartTime = 0;
-    }
-
-    public void harvestIfCould() {
-        if (gameMap.getBackgroundCells()[inCell[0]][inCell[1]].getStatus().equals("grown")) harvest();
-    }
-
-    private void harvest() {
-        int plantIndex = findPlantToHarvest();
-        if (plantIndex != -1) {
-            Plant.removePlant(plantIndex);
-            BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
-            cell.setImage("assets/environment/emptyCell.jpg");
-            cell.setStatus("empty");
-        }
-
-    }
-
-    private int findPlantToHarvest() {
-        int index = 0;
-        boolean plantFound = false;
-        Plant plant;
-        while (!plantFound) {
-            plant = Plant.plantedPlants.get(index);
-            if (plant.getInCell()[0] == inCell[0] && plant.getInCell()[1] == inCell[1]) return index;
-            index++;
-        }
-        return -1;
     }
 }

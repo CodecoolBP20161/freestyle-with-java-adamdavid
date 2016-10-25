@@ -2,6 +2,7 @@ package gameplay.characters;
 
 import gameplay.environment.BackgroundCell;
 import gameplay.environment.GameMap;
+import gameplay.environment.Plant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,22 +11,20 @@ import java.awt.*;
  * Created by cave on 2016.10.24..
  */
 abstract class Character {
-    protected int posX;
-    protected int posY;
-    protected int spriteWidth = 40;
-    protected int spriteHeight = 40;
-    protected int speed;
-    protected Image characterImage;
+    int posX;
+    int posY;
+    int speed;
+    Image characterImage;
     private Image[] leftMovementFrames = null;
     private Image[] rightMovementFrames = null;
     private Image[] movementFrames = null;
     private int recentMovementFrameIndex = 0;
-    protected boolean right = false;
-    protected boolean left = false;
-    protected boolean up = false;
-    protected boolean down = false;
-    protected int[] inCell;
-    protected GameMap gameMap;
+    boolean right = false;
+    boolean left = false;
+    boolean up = false;
+    boolean down = false;
+    int[] inCell;
+    GameMap gameMap;
 
     public int getPosX() {
         return posX;
@@ -59,23 +58,10 @@ abstract class Character {
         return down;
     }
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
-
     public int[] getInCell() {
         return inCell;
     }
 
-
-
-    public void setCharacterImage(Image characterImage) {
-        this.characterImage = characterImage;
-    }
 
     public Character(int posX, int posY, int speed, int inCellX, int inCellY,
                      String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
@@ -102,18 +88,18 @@ abstract class Character {
         gameMap = GameMap.getInstance();
     }
 
-    protected void shiftMovementFrame() {
+    void shiftMovementFrame() {
         if (recentMovementFrameIndex == movementFrames.length - 1) {
             recentMovementFrameIndex = 0;
         } else {
             recentMovementFrameIndex++;
         }
-        setCharacterImage(movementFrames[recentMovementFrameIndex]);
+        characterImage = movementFrames[recentMovementFrameIndex];
     }
 
-    protected void toggleStandingFrame() {
+    void toggleStandingFrame() {
         recentMovementFrameIndex = 0;
-        setCharacterImage(movementFrames[recentMovementFrameIndex]);
+        characterImage = movementFrames[recentMovementFrameIndex];
     }
 
     public void checkPosition() {
@@ -124,21 +110,62 @@ abstract class Character {
 
         for (int i = firstRowToCheck; i <= lastRowToCheck; i++) {
             for (int j = firstColumnToCheck; j <= lastColumnToCheck; j++) {
-                BackgroundCell cell = gameMap.getBackgroundCells()[i][j];
-
-                int[] playerFoot = {posX + spriteWidth / 2, posY + spriteHeight};
-                if ((playerFoot[0] >= cell.getPosX()) && (playerFoot[0] <= (cell.getPosX() + cell.getWidth())) &&
-                        (playerFoot[1] >= cell.getPosY() && playerFoot[1] <= cell.getPosY() + cell.getHeight())) {
-                    inCell[0] = i;
-                    inCell[1] = j;
-                    return;
-                }
+                if (checkCell(i, j)) return;
             }
         }
+    }
+
+    private boolean checkCell(int row, int column) {
+        BackgroundCell cell = gameMap.getBackgroundCells()[row][column];
+        int[] characterFoot = {posX + characterImage.getWidth(null) / 2, posY + characterImage.getHeight(null)};
+
+        if ((characterFoot[0] >= cell.getPosX()) && (characterFoot[0] <= (cell.getPosX() + cell.getWidth())) &&
+                (characterFoot[1] >= cell.getPosY() && characterFoot[1] <= cell.getPosY() + cell.getHeight())) {
+            setNewPosition(row, column);
+            return true;
+        }
+        return false;
+    }
+
+    private void setNewPosition(int row, int column) {
+        inCell[0] = row;
+        inCell[1] = column;
     }
 
     public void directionCheck() {
         if (left) movementFrames = leftMovementFrames;
         else if (right) movementFrames = rightMovementFrames;
+    }
+
+    // Harvest or Eat
+    public void harvestIfPossible() {
+        if (gameMap.getBackgroundCells()[inCell[0]][inCell[1]].getStatus().equals("grown")) harvest();
+    }
+
+    public void eatIfPossible() {
+        BackgroundCell actualCell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
+        if (actualCell.getStatus().equals("grown") || actualCell.getStatus().equals("planted")) harvest();
+    }
+
+    private void harvest() {
+        int plantIndex = findPlantToHarvest();
+        if (plantIndex != -1) {
+            Plant.removePlant(plantIndex);
+            BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
+            cell.setImage("assets/environment/emptyCell.jpg");
+            cell.setStatus("empty");
+        }
+
+    }
+
+    private int findPlantToHarvest() {
+        int index = 0;
+        Plant plant;
+        while (index < Plant.plantedPlants.size()) {
+            plant = Plant.plantedPlants.get(index);
+            if (plant.getInCell()[0] == inCell[0] && plant.getInCell()[1] == inCell[1]) return index;
+            index++;
+        }
+        return -1;
     }
 }

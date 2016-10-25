@@ -23,7 +23,7 @@ public class BackgroundCell {
         this.status = status;
     }
 
-    public Image getImage() {
+    Image getImage() {
         return image;
     }
 

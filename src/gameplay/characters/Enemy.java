@@ -1,12 +1,10 @@
 package gameplay.characters;
 
 
-/**
- * Created by cave on 2016.10.25..
- */
 public class Enemy extends Character{
     private Player player;
     private double ownSpeed;
+    public int stepCounter = 0;
 
     public Enemy(Player player, int posX, int posY, int speed, int inCellX, int inCellY,
                  String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
@@ -20,11 +18,29 @@ public class Enemy extends Character{
     }
 
     public void moving() {
-        if (player.posX > posX) posX += ownSpeed;
-        if (player.posX < posX) posX -= ownSpeed;
-        if (player.posY > posY) posY += ownSpeed;
-        if (player.posY < posY) posY -= ownSpeed;
-        ownSpeed += 0.001;
-    }
+        if (stepCounter == 5){
+            shiftMovementFrame();
+            stepCounter = 0;
+        }
 
+        if (player.posX > posX) {
+            posX += ownSpeed;
+            left = false;
+            right = true;
+        }
+        if (player.posX < posX) {
+            posX -= ownSpeed;
+            left = true;
+            right = false;
+        }
+        if (player.posY > posY) {
+            posY += ownSpeed;
+        }
+        if (player.posY < posY) {
+            posY -= ownSpeed;
+        }
+
+        ownSpeed += 0.001;
+        stepCounter++;
+    }
 }
