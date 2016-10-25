@@ -82,6 +82,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         player.directionCheck();
         player.checkPosition();
         Plant.growingPlants();
+        player.harvestIfCould();
         repaint();
     }
 

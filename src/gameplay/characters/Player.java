@@ -1,7 +1,6 @@
 package gameplay.characters;
 
 import gameplay.environment.BackgroundCell;
-import gameplay.environment.GameMap;
 import gameplay.environment.Plant;
 
 import javax.swing.*;
@@ -116,7 +115,6 @@ public class Player extends Character {
     }
 
     private void startPlanting() {
-        GameMap gameMap = GameMap.getInstance();
         BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
         if (cell.getStatus().equals("planted")) stopPlanting();
         else Planting();
@@ -133,7 +131,6 @@ public class Player extends Character {
     private void finishPlanting() {
         planting = false;
         plantingStartTime = 0;
-        GameMap gameMap = GameMap.getInstance();
         BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
         cell.setStatus("planted");
         cell.setImage("assets/environment/plantedCell.png");
@@ -143,6 +140,35 @@ public class Player extends Character {
     private void stopPlanting() {
         planting = false;
         plantingStartTime = 0;
+    }
+
+
+
+    public void harvestIfCould() {
+        if (gameMap.getBackgroundCells()[inCell[0]][inCell[1]].getStatus().equals("grown")) harvest();
+    }
+
+    private void harvest() {
+        int plantIndex = findPlantToHarvest();
+        if (plantIndex != -1) {
+            Plant.removePlant(plantIndex);
+            BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
+            cell.setImage("assets/environment/emptyCell.jpg");
+            cell.setStatus("empty");
+        }
+
+    }
+
+    private int findPlantToHarvest() {
+        int index = 0;
+        boolean plantFound = false;
+        Plant plant;
+        while (!plantFound) {
+            plant = Plant.plantedPlants.get(index);
+            if (plant.getInCell()[0] == inCell[0] && plant.getInCell()[1] == inCell[1]) return index;
+            index++;
+        }
+        return -1;
     }
 
 
