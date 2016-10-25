@@ -16,6 +16,8 @@ abstract class Character {
     protected int spriteHeight = 40;
     protected int speed;
     private Image characterImage;
+    private Image[] leftMovementFrames = null;
+    private Image[] rightMovementFrames = null;
     private Image[] movementFrames = null;
     private int recentMovementFrameIndex = 0;
     protected boolean right = false;
@@ -72,27 +74,49 @@ abstract class Character {
         this.characterImage = characterImage;
     }
 
-    public Character(int posX, int posY, int speed, int inCellX, int inCellY, String... movementFramesArray) {
+    public Character(int posX, int posY, int speed, int inCellX, int inCellY,
+                     String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
         this.posX = posX;
         this.posY = posY;
         this.speed = speed;
         this.inCell = new int[]{inCellX, inCellY};
-        this.movementFrames = new Image[movementFramesArray.length];
-        for (int i = 0; i < movementFramesArray.length; i++) {
-            this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
+
+        // right movement frames
+        this.rightMovementFrames = new Image[rightMovementFramesArray.length];
+        for (int i = 0; i < rightMovementFramesArray.length; i++) {
+            this.rightMovementFrames[i] = new ImageIcon(rightMovementFramesArray[i]).getImage();
         }
+
+        // left movement frames
+        this.leftMovementFrames = new Image[leftMovementFramesArray.length];
+        for (int i = 0; i < leftMovementFramesArray.length; i++) {
+            this.leftMovementFrames[i] = new ImageIcon(leftMovementFramesArray[i]).getImage();
+        }
+
+        this.movementFrames = rightMovementFrames;
         this.characterImage = movementFrames[0];
     }
 
-    public Character(int posX, int posY, int inCellX, int inCellY, String... movementFramesArray) {
+    public Character(int posX, int posY, int inCellX, int inCellY,
+                     String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
         this.posX = posX;
         this.posY = posY;
         this.speed = 1;
         this.inCell = new int[]{inCellX, inCellY};
-        this.movementFrames = new Image[movementFramesArray.length];
-        for (int i = 0; i < movementFramesArray.length; i++) {
-            this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
+
+        // right movement frames
+        this.rightMovementFrames = new Image[rightMovementFramesArray.length];
+        for (int i = 0; i < rightMovementFramesArray.length; i++) {
+            this.rightMovementFrames[i] = new ImageIcon(rightMovementFramesArray[i]).getImage();
         }
+
+        // left movement frames
+        this.leftMovementFrames = new Image[leftMovementFramesArray.length];
+        for (int i = 0; i < leftMovementFramesArray.length; i++) {
+            this.leftMovementFrames[i] = new ImageIcon(leftMovementFramesArray[i]).getImage();
+        }
+
+        this.movementFrames = rightMovementFrames;
         this.characterImage = movementFrames[0];
     }
 
@@ -133,27 +157,7 @@ abstract class Character {
     }
 
     public void directionCheck() {
-        if (left) {
-            String[] movementFramesArray = new String[]
-                    {
-                            "assets/characters/left_duck/duck01_left.png",
-                            "assets/characters/left_duck/duck02_left.png",
-                            "assets/characters/left_duck/duck03_left.png"
-                    };
-            for (int i = 0; i < movementFramesArray.length; i++) {
-                this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
-            }
-
-        } else if (right) {
-            String[] movementFramesArray = new String[]
-                    {
-                            "assets/characters/right_duck/duck01.png",
-                            "assets/characters/right_duck/duck02.png",
-                            "assets/characters/right_duck/duck03.png"
-                    };
-            for (int i = 0; i < movementFramesArray.length; i++) {
-                this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
-            }
-        }
+        if (left) movementFrames = leftMovementFrames;
+        else if (right) movementFrames = rightMovementFrames;
     }
 }
