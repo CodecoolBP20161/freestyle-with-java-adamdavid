@@ -25,6 +25,7 @@ abstract class Character {
     protected boolean up = false;
     protected boolean down = false;
     protected int[] inCell;
+    protected GameMap gameMap;
 
     public int getPosX() {
         return posX;
@@ -95,6 +96,8 @@ abstract class Character {
 
         this.movementFrames = rightMovementFrames;
         this.characterImage = movementFrames[0];
+
+        gameMap = GameMap.getInstance();
     }
 
     public Character(int posX, int posY, int inCellX, int inCellY,
@@ -118,6 +121,8 @@ abstract class Character {
 
         this.movementFrames = rightMovementFrames;
         this.characterImage = movementFrames[0];
+
+        gameMap = GameMap.getInstance();
     }
 
     protected void shiftMovementFrame() {
@@ -135,7 +140,6 @@ abstract class Character {
     }
 
     public void checkPosition() {
-        GameMap gameMap = GameMap.getInstance();
         int firstRowToCheck = (inCell[0] == 0) ? 0 : inCell[0] - 1;
         int lastRowToCheck = (inCell[0] == gameMap.getBackgroundCells().length - 1) ? inCell[0] : inCell[0] + 1;
         int firstColumnToCheck = (inCell[1] == 0) ? 0 : inCell[1] - 1;
