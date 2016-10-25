@@ -154,6 +154,6 @@ abstract class Character {
             for (int i = 0; i < movementFramesArray.length; i++) {
                 this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
             }
-        }git stat
+        }
     }
 }
