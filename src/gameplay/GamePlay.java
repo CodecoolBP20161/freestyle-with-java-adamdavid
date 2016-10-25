@@ -2,6 +2,7 @@ package gameplay;
 
 import gameplay.characters.Player;
 import gameplay.environment.GameMap;
+import gameplay.environment.Plant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,6 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
 
         // test rows
-        g.setColor(Color.white);
         g.setFont(new Font("arial", Font.PLAIN, 14));
         g.drawString("cell: " + player.getInCell()[0] + " " + player.getInCell()[1], 600, 25);
         g.drawString("planting: " + player.isPlanting(), 600, 50);
@@ -52,6 +52,15 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.drawString("right: " + player.isRight(), 600, 100);
         g.drawString("up: " + player.isUp(), 600, 125);
         g.drawString("down: " + player.isDown(), 600, 150);
+        g.setColor(Color.red);
+        if (Plant.plantedPlants.size() > 0) {
+            g.drawString("plantstatus: " + Plant.plantedPlants.get(0).getStatus(), 600, 175);
+            g.drawString("plantcounter: " + Plant.plantedPlants.get(0).getGrowingCounter(), 600, 20);
+            g.drawString("plantcellx: " + Plant.plantedPlants.get(0).getInCell()[0], 600, 225);
+            g.drawString("plantcelly: " + Plant.plantedPlants.get(0).getInCell()[1], 600, 250);
+            g.drawString("plantcelly: " + System.currentTimeMillis(), 600, 300);
+            g.drawString("plantgrowing: " + (System.currentTimeMillis() - Plant.plantedPlants.get(0).getGrowingCounter()), 600, 325);
+        }
 
         Toolkit.getDefaultToolkit().sync();
     }
@@ -61,6 +70,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         player.moving();
         player.checkPosition();
+        Plant.growingPlants();
         repaint();
     }
 
