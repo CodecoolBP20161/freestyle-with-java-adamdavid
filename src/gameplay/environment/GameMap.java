@@ -29,12 +29,16 @@ public class GameMap {
         return windowWidth;
     }
 
+    public BackgroundCell[][] getBackgroundCells() {
+        return backgroundCells;
+    }
+
     // generate BackgroundCell objects
     private BackgroundCell[][] generateCells() {
 
         int cellsInRow = 12;
         int cellsInColumn = 9;
-        int cellBorderWidth = 10;
+        int cellBorderWidth = 5;
         int cellWidth = windowWidth / cellsInRow - cellBorderWidth;
         int cellHeight= windowHeight / cellsInColumn - cellBorderWidth;
         backgroundCells = new BackgroundCell[cellsInColumn][cellsInRow];
@@ -56,29 +60,14 @@ public class GameMap {
         for (int i = 0; i < backgroundCells.length; i++) {
             for (int j = 0; j < backgroundCells[i].length; j++) {
                 BackgroundCell cell =  backgroundCells[i][j];
-                g2d.drawImage(cell.image, cell.posX, cell.posY, cell.width, cell.height, gamePlay);
+                g2d.drawImage(cell.getImage(), cell.getPosX(),
+                        cell.getPosY(), cell.getWidth(),
+                        cell.getHeight(), gamePlay);
             }
         }
     }
 
 
-    private class BackgroundCell {
-        private Image image;
-        private int posX;
-        private int posY;
-        private int width;
-        private int height;
-        private String status;
 
-        public BackgroundCell(String imageSource, int posX, int posY, int width, int height, String status) {
-            this.image = new ImageIcon(imageSource).getImage();
-            this.posX = posX;
-            this.posY = posY;
-            this.width = width;
-            this.height = height;
-            this.status = status;
-        }
-
-    }
 
 }
