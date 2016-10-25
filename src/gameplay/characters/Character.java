@@ -131,4 +131,29 @@ abstract class Character {
             }
         }
     }
+
+    public void directionCheck() {
+        if (left) {
+            String[] movementFramesArray = new String[]
+                    {
+                            "assets/characters/left_duck/duck01_left.png",
+                            "assets/characters/left_duck/duck02_left.png",
+                            "assets/characters/left_duck/duck03_left.png"
+                    };
+            for (int i = 0; i < movementFramesArray.length; i++) {
+                this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
+            }
+
+        } else if (right) {
+            String[] movementFramesArray = new String[]
+                    {
+                            "assets/characters/right_duck/duck01.png",
+                            "assets/characters/right_duck/duck02.png",
+                            "assets/characters/right_duck/duck03.png"
+                    };
+            for (int i = 0; i < movementFramesArray.length; i++) {
+                this.movementFrames[i] = new ImageIcon(movementFramesArray[i]).getImage();
+            }
+        }git stat
+    }
 }

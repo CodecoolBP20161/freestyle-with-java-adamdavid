@@ -21,9 +21,9 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         this.gameMap = GameMap.getInstance(windowWidth, windowHeight);
         this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
                 gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
-                "assets/characters/duck01.png",
-                "assets/characters/duck02.png",
-                "assets/characters/duck03.png");
+                "assets/characters/right_duck/duck01.png",
+                "assets/characters/right_duck/duck02.png",
+                "assets/characters/right_duck/duck03.png");
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -69,6 +69,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.moving();
+        player.directionCheck();
         player.checkPosition();
         Plant.growingPlants();
         repaint();
