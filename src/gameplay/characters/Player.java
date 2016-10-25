@@ -2,6 +2,7 @@ package gameplay.characters;
 
 import gameplay.environment.BackgroundCell;
 import gameplay.environment.GameMap;
+import gameplay.environment.Plant;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -134,6 +135,7 @@ public class Player extends Character {
         BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
         cell.setStatus("planted");
         cell.setImage("assets/environment/plantedCell.png");
+        Plant.addNewPlant(new int[]{inCell[0], inCell[1]});
     }
 
     private void stopPlanting() {
