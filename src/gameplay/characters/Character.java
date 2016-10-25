@@ -15,7 +15,7 @@ abstract class Character {
     protected int spriteWidth = 40;
     protected int spriteHeight = 40;
     protected int speed;
-    private Image characterImage;
+    protected Image characterImage;
     private Image[] leftMovementFrames = null;
     private Image[] rightMovementFrames = null;
     private Image[] movementFrames = null;
@@ -79,29 +79,6 @@ abstract class Character {
         this.posX = posX;
         this.posY = posY;
         this.speed = speed;
-        this.inCell = new int[]{inCellX, inCellY};
-
-        // right movement frames
-        this.rightMovementFrames = new Image[rightMovementFramesArray.length];
-        for (int i = 0; i < rightMovementFramesArray.length; i++) {
-            this.rightMovementFrames[i] = new ImageIcon(rightMovementFramesArray[i]).getImage();
-        }
-
-        // left movement frames
-        this.leftMovementFrames = new Image[leftMovementFramesArray.length];
-        for (int i = 0; i < leftMovementFramesArray.length; i++) {
-            this.leftMovementFrames[i] = new ImageIcon(leftMovementFramesArray[i]).getImage();
-        }
-
-        this.movementFrames = rightMovementFrames;
-        this.characterImage = movementFrames[0];
-    }
-
-    public Character(int posX, int posY, int inCellX, int inCellY,
-                     String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
-        this.posX = posX;
-        this.posY = posY;
-        this.speed = 1;
         this.inCell = new int[]{inCellX, inCellY};
 
         // right movement frames

@@ -5,6 +5,7 @@ import gameplay.environment.GameMap;
 import gameplay.environment.Plant;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.lang.*;
 
@@ -13,22 +14,41 @@ import java.lang.*;
  */
 public class Player extends Character {
 
+
     private int stepCounter = 0;
+    private int plantingCounter = 1;
     private boolean planting = false;
     private long plantingStartTime = 0;
+    private Image[] leftPlantingFrames = null;
+    private Image[] rightPlantingFrames = null;
+    private Image[] plantingFrames = null;
+    private int recentPlantingFrameIndex = 0;
 
     public Player(int posX, int posY, int speed, int inCellX, int inCellY,
-                  String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
+                  String[] leftMovementFramesArray, String[] rightMovementFramesArray,
+                  String[] leftPlantingFramesArray, String[] rightPlantingFramesArray) {
         super(posX, posY, speed, inCellX, inCellY, leftMovementFramesArray, rightMovementFramesArray);
-    }
 
-    public Player(int posX, int posY, int inCellX, int inCellY,
-                  String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
-        super(posX, posY, inCellX, inCellY, leftMovementFramesArray, rightMovementFramesArray);
+        // left planting
+        this.leftPlantingFrames = new Image[leftPlantingFramesArray.length];
+        for (int i = 0; i < leftPlantingFramesArray.length; i++) {
+            this.leftPlantingFrames[i] = new ImageIcon(leftPlantingFramesArray[i]).getImage();
+        }
+
+        // right planting
+        this.rightPlantingFrames = new Image[rightPlantingFramesArray.length];
+        for (int i = 0; i < rightPlantingFramesArray.length; i++) {
+            this.rightPlantingFrames[i] = new ImageIcon(rightPlantingFramesArray[i]).getImage();
+        }
+        this.plantingFrames = rightPlantingFrames;
     }
 
     public boolean isPlanting() {
         return planting;
+    }
+
+    public int getRecentPlantingFrameIndex() {
+        return recentPlantingFrameIndex;
     }
 
     public void moving() {
@@ -54,7 +74,7 @@ public class Player extends Character {
         else if (bottomEdgeCollision()) posY = JFrame.getWindows()[0].getHeight() - (spriteHeight + 5);
 
         if (left || right || up || down) stepCounter++;
-        if (!left && !right && !up && !down) {
+        if (!left && !right && !up && !down && !planting) {
             toggleStandingFrame();
             stepCounter = 0;
         }
@@ -124,15 +144,17 @@ public class Player extends Character {
 
     private void Planting() {
         planting = true;
+        characterImage = plantingFrames[recentPlantingFrameIndex];
+        if (plantingCounter % 10 == 0) shiftPlantingFrameIndex();
+        plantingCounter++;
         if (plantingStartTime == 0) plantingStartTime = System.currentTimeMillis();
-        if (System.currentTimeMillis() - plantingStartTime > 1500) {
+        if (System.currentTimeMillis() - plantingStartTime > 2000) {
             finishPlanting();
         }
     }
 
     private void finishPlanting() {
-        planting = false;
-        plantingStartTime = 0;
+        resetHarvestAttributes();
         GameMap gameMap = GameMap.getInstance();
         BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
         cell.setStatus("planted");
@@ -141,9 +163,27 @@ public class Player extends Character {
     }
 
     private void stopPlanting() {
+        resetHarvestAttributes();
+    }
+
+    protected void shiftPlantingFrameIndex() {
+        if (recentPlantingFrameIndex == plantingFrames.length - 1) {
+            recentPlantingFrameIndex = 0;
+        } else {
+            recentPlantingFrameIndex++;
+        }
+    }
+
+    public void plantingDirectionCheck() {
+        if (left) plantingFrames = leftPlantingFrames;
+        else if (right) plantingFrames = rightPlantingFrames;
+    }
+
+    private void resetHarvestAttributes() {
+        plantingCounter = 1;
+        recentPlantingFrameIndex = 0;
         planting = false;
         plantingStartTime = 0;
     }
-
 
 }
