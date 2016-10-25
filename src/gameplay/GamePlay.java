@@ -19,11 +19,21 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public GamePlay(int windowWidth, int windowHeight){
         this.delay = 40;
         this.gameMap = GameMap.getInstance(windowWidth, windowHeight);
-        this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
-                gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
+
+        // sprite images
+        String[] rightSprites = new String[] {
                 "assets/characters/right_duck/duck01.png",
                 "assets/characters/right_duck/duck02.png",
-                "assets/characters/right_duck/duck03.png");
+                "assets/characters/right_duck/duck03.png"
+        };
+        String[] leftSprites = new String[] {
+                "assets/characters/left_duck/duck01.png",
+                "assets/characters/left_duck/duck02.png",
+                "assets/characters/left_duck/duck03.png"
+        };
+
+        this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
+                gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5, leftSprites, rightSprites);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);

@@ -17,12 +17,14 @@ public class Player extends Character {
     private boolean planting = false;
     private long plantingStartTime = 0;
 
-    public Player(int posX, int posY, int speed, int inCellX, int inCellY, String... moveFrameArray) {
-        super(posX, posY, speed, inCellX, inCellY, moveFrameArray);
+    public Player(int posX, int posY, int speed, int inCellX, int inCellY,
+                  String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
+        super(posX, posY, speed, inCellX, inCellY, leftMovementFramesArray, rightMovementFramesArray);
     }
 
-    public Player(int posX, int posY, int inCellX, int inCellY, String... moveFrameArray) {
-        super(posX, posY, inCellX, inCellY, moveFrameArray);
+    public Player(int posX, int posY, int inCellX, int inCellY,
+                  String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
+        super(posX, posY, inCellX, inCellY, leftMovementFramesArray, rightMovementFramesArray);
     }
 
     public boolean isPlanting() {
@@ -142,4 +144,6 @@ public class Player extends Character {
         planting = false;
         plantingStartTime = 0;
     }
+
+
 }
