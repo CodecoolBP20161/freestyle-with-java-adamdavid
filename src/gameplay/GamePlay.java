@@ -90,9 +90,10 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g2d.drawImage(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), this);
 
         // test rows
-//        g.setColor(Color.red);
-//        g.setFont(new Font("arial", Font.PLAIN, 14));
-//        g.drawString("right: " + player.isRight(), 600, 100);
+        g.setColor(Color.red);
+        g.setFont(new Font("arial", Font.PLAIN, 14));
+//        g.drawString("collide: " + player.collideWithSprite(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), 10), 600, 100);
+//        g.drawString("collide: " + enemy.collideWithSprite(player.getCharacterImage(), player.getPosX(), player.getPosY()), 600, 150);
 
         Toolkit.getDefaultToolkit().sync();
     }
@@ -102,6 +103,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         player.moving();
         enemy.moving();
+        player.checkDeath(enemy, 22);
         player.directionCheck();
         enemy.directionCheck();
         player.checkPosition();
