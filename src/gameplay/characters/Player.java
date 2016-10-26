@@ -176,7 +176,6 @@ public class Player extends Character {
     }
 
     private void couldRollJoint() {
-        points = 5;
         if (points == 5 && joint == null) {
             joint = new Joint(this, 15, 17, posX, posY, speed * 2, inCell[0], inCell[1],
                     new String[]{"assets/characters/left_duck/joint.png"},
