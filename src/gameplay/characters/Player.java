@@ -19,6 +19,9 @@ public class Player extends Character {
     private Image[] rightPlantingFrames = null;
     private Image[] plantingFrames = null;
     private int recentPlantingFrameIndex = 0;
+    private Joint joint = null;
+    private Image jointImage;
+
 
     public Player(int posX, int posY, int speed, int inCellX, int inCellY,
                   String[] leftMovementFramesArray, String[] rightMovementFramesArray,
@@ -39,6 +42,17 @@ public class Player extends Character {
         this.plantingFrames = rightPlantingFrames;
     }
 
+    public Joint getJoint() {
+        return joint;
+    }
+
+    public Image getJointImage() {
+        return jointImage;
+    }
+
+    public void setJointImage(Image jointImage) {
+        this.jointImage = jointImage;
+    }
 
     public void moving() {
         if (stepCounter == 3) {
@@ -63,6 +77,10 @@ public class Player extends Character {
             toggleStandingFrame();
             stepCounter = 0;
         }
+
+        couldRollJoint();
+        if (joint != null) joint.move();
+
     }
 
     private boolean leftEdgeCollision() {
@@ -169,5 +187,16 @@ public class Player extends Character {
         if (collideWithAnotherCharacter(enemy, border)) {
             System.exit(0);
         }
+    }
+
+    private void couldRollJoint() {
+        if (points % 5 == 0 && points > 0 && joint == null) {
+            joint = new Joint(this, 15, 17, "assets/characters/left_duck/joint.png", "assets/characters/right_duck/joint.png");
+            jointImage = joint.getImages()[0];
+        }
+    }
+
+    private void shoot() {
+
     }
 }

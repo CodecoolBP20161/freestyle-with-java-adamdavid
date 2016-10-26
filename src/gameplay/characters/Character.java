@@ -26,6 +26,11 @@ abstract class Character {
     int[] inCell;
     int stepCounter = 0;
     GameMap gameMap;
+    int points = 0;
+
+    public int getPoints() {
+        return points;
+    }
 
     public int getPosX() {
         return posX;
@@ -155,6 +160,7 @@ abstract class Character {
             BackgroundCell cell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
             cell.setImage("assets/environment/emptyCell.jpg");
             cell.setStatus("empty");
+            points++;
         }
     }
 
