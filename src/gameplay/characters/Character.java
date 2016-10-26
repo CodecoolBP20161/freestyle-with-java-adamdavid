@@ -15,9 +15,9 @@ abstract class Character {
     int posY;
     int speed;
     Image characterImage;
-    private Image[] leftMovementFrames = null;
-    private Image[] rightMovementFrames = null;
-    private Image[] movementFrames = null;
+    Image[] leftMovementFrames = null;
+    Image[] rightMovementFrames = null;
+    Image[] movementFrames = null;
     private int recentMovementFrameIndex = 0;
     boolean right = false;
     boolean left = false;
@@ -182,6 +182,24 @@ abstract class Character {
         boolean statementRight = posX > character.posX + character.getCharacterImage().getWidth(null) - border;
 
         return !(statementUp || statementDown || statementLeft || statementRight);
+    }
+
+
+
+    boolean leftEdgeCollision() {
+        return posX < 1;
+    }
+
+    boolean rightEdgeCollision() {
+        return posX > gameMap.getWindowWidth() - (characterImage.getWidth(null) + 10);
+    }
+
+    boolean topEdgeCollision() {
+        return posY < 1;
+    }
+
+    boolean bottomEdgeCollision() {
+        return posY > gameMap.getWindowHeight() - (characterImage.getHeight(null) + 3 + speed);
     }
 
 

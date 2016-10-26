@@ -38,4 +38,10 @@ public class Enemy extends Character{
         ownSpeed += 0.001;
         stepCounter++;
     }
+
+//    public void checkJoint(Character enemy, int border) {
+//        if (collideWithAnotherCharacter(enemy, border)) {
+//            System.exit(0);
+//        }
+//    }
 }

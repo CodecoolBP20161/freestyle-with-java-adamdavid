@@ -1,39 +1,27 @@
 package gameplay.characters;
 
-import gameplay.environment.Plant;
-
 import javax.swing.*;
-import java.awt.*;
 
-/**
- * Created by cave on 2016.10.26..
- */
-public class Joint {
+
+public class Joint extends Character{
     private Player player;
     private int posX;
     private int posY;
     private int placementX;
     private int placementY;
     private boolean shoot = false;
-    private Image[] images;
     private String shootDirection = "right";
 
-
-    Joint(Player player, int placementX, int placementY, String leftJointSource, String rightJointSource) {
+    public Joint(Player player, int placementX, int placementY, int posX, int posY, int speed, int inCellX, int inCellY,
+                 String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
+        super(posX, posY, speed, inCellX, inCellY, leftMovementFramesArray, rightMovementFramesArray);
         this.player = player;
         this.placementX = placementX;
         this.placementY = placementY;
-        this.posX = player.getPosX();
-        this.posY = player.getPosY();
-
-        Image leftJoint = new ImageIcon(leftJointSource).getImage();
-        Image rightJoint = new ImageIcon(rightJointSource).getImage();
-        images = new Image[]{leftJoint, rightJoint};
-        checkDirection();
-    }
-
-    public Image[] getImages() {
-        return images;
+        this.characterImage = new ImageIcon(leftMovementFramesArray[0]).getImage();
+        checkPlayersDirection();
+        if (shootDirection.equals("left")) this.movementFrames = leftMovementFrames;
+        else this.movementFrames = rightMovementFrames;
     }
 
     public int getPosX() {
@@ -44,37 +32,52 @@ public class Joint {
         return posY;
     }
 
-    private void draw() {
-
+    void setShoot(boolean shoot) {
+        this.shoot = shoot;
     }
 
-    public void move() {
+    void move() {
         if (!shoot) followPlayer();
-//            else shootMovement();
+        else shootMovement();
 
     }
 
     private void followPlayer() {
-        checkDirection();
+        checkPlayersDirection();
+        directionCheck();
+        shiftMovementFrame();
         if (shootDirection.equals("left")) {
-            player.setJointImage(images[0]);
             posX = player.getPosX() - placementX;
             posY = player.getPosY() + placementY;
         } else {
-            player.setJointImage(images[1]);
-            int jointCoversPlayer = player.getJointImage().getWidth(null) - placementX;
+            int jointCoversPlayer = characterImage.getWidth(null) - placementX;
             posX = player.getPosX() + player.getCharacterImage().getWidth(null) - jointCoversPlayer;
             posY = player.getPosY() + placementY;
         }
     }
 
-    private void checkDirection() {
-        if (player.isRight()) shootDirection = "right";
-        if (player.isLeft()) shootDirection = "left";
+    private void checkPlayersDirection() {
+        if (player.isRight()) {
+            shootDirection = "right";
+            right = true;
+            left = false;
+        }
+        if (player.isLeft()) {
+            shootDirection = "left";
+            left = true;
+            right = false;
+        }
     }
 
-//        private void shootMovement() {
-//            if (isRight()) ;
-//            else if (isLeft()) ;
-//        }
+    private void shootMovement() {
+        if (shootDirection.equals("right")) {
+            posX += player.getSpeed() * 2;
+        } else {
+            posX -= player.getSpeed() * 2;
+        }
+
+        if (posX < 1 || posX > gameMap.getWindowWidth()) {
+            player.setShotJoint(null);
+        }
+    }
 }

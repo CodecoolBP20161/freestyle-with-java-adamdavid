@@ -20,7 +20,7 @@ public class Player extends Character {
     private Image[] plantingFrames = null;
     private int recentPlantingFrameIndex = 0;
     private Joint joint = null;
-    private Image jointImage;
+    private Joint shotJoint = null;
 
 
     public Player(int posX, int posY, int speed, int inCellX, int inCellY,
@@ -46,12 +46,12 @@ public class Player extends Character {
         return joint;
     }
 
-    public Image getJointImage() {
-        return jointImage;
+    public Joint getShotJoint() {
+        return shotJoint;
     }
 
-    public void setJointImage(Image jointImage) {
-        this.jointImage = jointImage;
+    public void setShotJoint(Joint shotJoint) {
+        this.shotJoint = shotJoint;
     }
 
     public void moving() {
@@ -80,25 +80,8 @@ public class Player extends Character {
 
         couldRollJoint();
         if (joint != null) joint.move();
+        if (shotJoint != null) shotJoint.move();
 
-    }
-
-    private boolean leftEdgeCollision() {
-        return posX < 1;
-    }
-
-    private boolean rightEdgeCollision() {
-        int windowWidth = JFrame.getWindows()[0].getWidth();
-        return posX > windowWidth - (characterImage.getWidth(null) + 10);
-    }
-
-    private boolean topEdgeCollision() {
-        return posY < 1;
-    }
-
-    private boolean bottomEdgeCollision() {
-        int windowHeight = JFrame.getWindows()[0].getHeight();
-        return posY > windowHeight - (characterImage.getHeight(null) + 3 + speed);
     }
 
     public void keyPress(KeyEvent e) {
@@ -120,6 +103,9 @@ public class Player extends Character {
             case KeyEvent.VK_DOWN:
                 stopPlanting();
                 down = true;
+                break;
+            case KeyEvent.VK_X:
+                if (joint != null) shoot();
                 break;
         }
     }
@@ -190,13 +176,18 @@ public class Player extends Character {
     }
 
     private void couldRollJoint() {
-        if (points % 5 == 0 && points > 0 && joint == null) {
-            joint = new Joint(this, 15, 17, "assets/characters/left_duck/joint.png", "assets/characters/right_duck/joint.png");
-            jointImage = joint.getImages()[0];
+        points = 5;
+        if (points == 5 && joint == null) {
+            joint = new Joint(this, 15, 17, posX, posY, speed * 2, inCell[0], inCell[1],
+                    new String[]{"assets/characters/left_duck/joint.png"},
+                    new String[]{"assets/characters/right_duck/joint.png"});
         }
     }
 
     private void shoot() {
-
+        joint.setShoot(true);
+        shotJoint = joint;
+        joint = null;
+        points = 0;
     }
 }

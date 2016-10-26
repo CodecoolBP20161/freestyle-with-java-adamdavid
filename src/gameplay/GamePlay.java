@@ -1,6 +1,7 @@
 package gameplay;
 
 import gameplay.characters.Enemy;
+import gameplay.characters.Joint;
 import gameplay.characters.Player;
 import gameplay.environment.GameMap;
 import gameplay.environment.Plant;
@@ -88,15 +89,23 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         // draw the player and enemy
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
         if (player.getJoint() != null) {
-            g2d.drawImage(player.getJointImage(), player.getJoint().getPosX(), player.getJoint().getPosY(), this);
+            g2d.drawImage(player.getJoint().getCharacterImage(), player.getJoint().getPosX(), player.getJoint().getPosY(), this);
+        }
+        if (player.getShotJoint() != null) {
+            Joint shotJoint = player.getShotJoint();
+            g2d.drawImage(player.getShotJoint().getCharacterImage(), shotJoint.getPosX(), shotJoint.getPosY(), this);
         }
 
         g2d.drawImage(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), this);
 
         // test rows
-//        g.setColor(Color.red);
-//        g.setFont(new Font("arial", Font.PLAIN, 14));
-//        g.drawString("collide: " + player.getJoint(), 200, 100);
+        g.setColor(Color.red);
+        g.setFont(new Font("arial", Font.PLAIN, 14));
+        g.drawString("collide: " + player.getJoint(), 200, 100);
+        g.drawString("collide: " + player.getShotJoint(), 200, 150);
+        if(player.getShotJoint() != null) {
+            g.drawString("collide: " + player.getShotJoint().getPosX() + "  " + player.getShotJoint().getPosY(), 200, 200);
+        }
 //        g.drawString("collide: " + enemy.collideWithSprite(player.getCharacterImage(), player.getPosX(), player.getPosY()), 600, 150);
 
         Toolkit.getDefaultToolkit().sync();
