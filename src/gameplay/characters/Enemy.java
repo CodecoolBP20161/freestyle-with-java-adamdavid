@@ -4,7 +4,6 @@ package gameplay.characters;
 public class Enemy extends Character{
     private Player player;
     private double ownSpeed;
-    public int stepCounter = 0;
 
     public Enemy(Player player, int posX, int posY, int speed, int inCellX, int inCellY,
                  String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
@@ -12,11 +11,7 @@ public class Enemy extends Character{
         this.ownSpeed = speed;
         this.player = player;
     }
-
-    public double getOwnSpeed() {
-        return ownSpeed;
-    }
-
+    
     public void moving() {
         if (stepCounter == 5){
             shiftMovementFrame();
