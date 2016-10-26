@@ -98,16 +98,6 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
         g2d.drawImage(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), this);
 
-        // test rows
-//        g.setColor(Color.red);
-//        g.setFont(new Font("arial", Font.PLAIN, 14));
-//        g.drawString("collide: " + player.getJoint(), 200, 100);
-//        g.drawString("collide: " + player.getShotJoint(), 200, 150);
-//        if(player.getShotJoint() != null) {
-//            g.drawString("collide: " + player.getShotJoint().getPosX() + "  " + player.getShotJoint().getPosY(), 200, 200);
-//        }
-//        g.drawString("collide: " + enemy.collideWithSprite(player.getCharacterImage(), player.getPosX(), player.getPosY()), 600, 150);
-
         Toolkit.getDefaultToolkit().sync();
     }
 
@@ -117,6 +107,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         player.moving();
         enemy.moving();
         player.checkDeath(enemy, 22);
+        if (player.getShotJoint() != null) enemy.checkShotJoint(player.getShotJoint(), 0);
         player.directionCheck();
         enemy.directionCheck();
         player.checkPosition();

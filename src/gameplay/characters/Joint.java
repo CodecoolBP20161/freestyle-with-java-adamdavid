@@ -5,15 +5,15 @@ import javax.swing.*;
 
 public class Joint extends Character{
     private Player player;
-    private int posX;
-    private int posY;
+    int posX;
+    int posY;
     private int placementX;
     private int placementY;
     private boolean shoot = false;
     private String shootDirection = "right";
 
-    public Joint(Player player, int placementX, int placementY, int posX, int posY, int speed, int inCellX, int inCellY,
-                 String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
+    Joint(Player player, int placementX, int placementY, int posX, int posY, int speed, int inCellX, int inCellY,
+          String[] leftMovementFramesArray, String[] rightMovementFramesArray) {
         super(posX, posY, speed, inCellX, inCellY, leftMovementFramesArray, rightMovementFramesArray);
         this.player = player;
         this.placementX = placementX;

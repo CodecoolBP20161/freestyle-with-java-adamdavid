@@ -175,16 +175,23 @@ abstract class Character {
         return -1;
     }
 
-    boolean collideWithAnotherCharacter(Character character, int border) {
-        boolean statementUp = posY + characterImage.getHeight(null) - border < character.posY;
-        boolean statementDown = posY > character.posY + character.getCharacterImage().getHeight(null) - border;
-        boolean statementLeft = posX + characterImage.getWidth(null) - border < character.posX;
-        boolean statementRight = posX > character.posX + character.getCharacterImage().getWidth(null) - border;
+    boolean collideWithEnemy(Enemy enemy, int border) {
+        boolean statementUp = posY + characterImage.getHeight(null) - border < enemy.posY;
+        boolean statementDown = posY > enemy.posY + enemy.getCharacterImage().getHeight(null) - border;
+        boolean statementLeft = posX + characterImage.getWidth(null) - border < enemy.posX;
+        boolean statementRight = posX > enemy.posX + enemy.getCharacterImage().getWidth(null) - border;
 
         return !(statementUp || statementDown || statementLeft || statementRight);
     }
 
+    boolean collideWithEnemy(Joint shotJoint, int border) {
+        boolean statementUp = posY + characterImage.getHeight(null) - border < shotJoint.posY;
+        boolean statementDown = posY > shotJoint.posY + shotJoint.getCharacterImage().getHeight(null) - border;
+        boolean statementLeft = posX + characterImage.getWidth(null) - border < shotJoint.posX;
+        boolean statementRight = posX > shotJoint.posX + shotJoint.getCharacterImage().getWidth(null) - border;
 
+        return !(statementUp || statementDown || statementLeft || statementRight);
+    }
 
     boolean leftEdgeCollision() {
         return posX < 1;

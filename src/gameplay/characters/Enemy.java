@@ -39,9 +39,15 @@ public class Enemy extends Character{
         stepCounter++;
     }
 
-//    public void checkJoint(Character enemy, int border) {
-//        if (collideWithAnotherCharacter(enemy, border)) {
-//            System.exit(0);
-//        }
-//    }
+    public void checkShotJoint(Joint shotJoint, int border) {
+        if (collideWithEnemy(shotJoint, border)) {
+            System.out.println("yeah");
+            ownSpeed -= 0.5;
+            player.setShotJoint(null);
+        }
+    }
+
+    public double getOwnSpeed() {
+        return ownSpeed;
+    }
 }

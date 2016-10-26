@@ -169,12 +169,6 @@ public class Player extends Character {
         plantingStartTime = 0;
     }
 
-    public void checkDeath(Character enemy, int border) {
-        if (collideWithAnotherCharacter(enemy, border)) {
-            System.exit(0);
-        }
-    }
-
     private void couldRollJoint() {
         if (points == 5 && joint == null) {
             joint = new Joint(this, 15, 17, posX, posY, speed * 2, inCell[0], inCell[1],
@@ -188,5 +182,11 @@ public class Player extends Character {
         shotJoint = joint;
         joint = null;
         points = 0;
+    }
+
+    public void checkDeath(Enemy enemy, int border) {
+        if (collideWithEnemy(enemy, border)) {
+            System.exit(0);
+        }
     }
 }
