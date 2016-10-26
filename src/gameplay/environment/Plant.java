@@ -6,25 +6,19 @@ import java.util.ArrayList;
 public class Plant {
     private int[] inCell;
     private long growingCounter;
-    private String status;
-    public static ArrayList<Plant> plantedPlants = new ArrayList<>();
+    private static ArrayList<Plant> plantedPlants = new ArrayList<>();
 
     private Plant(int[] inCell) {
         this.inCell = inCell;
         this.growingCounter = System.currentTimeMillis();
-        this.status = "planted";
     }
 
     public int[] getInCell() {
         return inCell;
     }
 
-    public float getGrowingCounter() {
-        return growingCounter;
-    }
-
-    public String getStatus() {
-        return status;
+    public static ArrayList<Plant> getPlantedPlants() {
+        return plantedPlants;
     }
 
     public static void addNewPlant(int[] inCell) {
@@ -52,5 +46,4 @@ public class Plant {
         cell.setStatus("grown");
         cell.setImage("assets/environment/grownCell.jpg");
     }
-
 }

@@ -24,6 +24,7 @@ abstract class Character {
     boolean up = false;
     boolean down = false;
     int[] inCell;
+    int stepCounter = 0;
     GameMap gameMap;
 
     public int getPosX() {
@@ -139,15 +140,15 @@ abstract class Character {
 
     // Harvest or Eat
     public void harvestIfPossible() {
-        if (gameMap.getBackgroundCells()[inCell[0]][inCell[1]].getStatus().equals("grown")) harvest();
+        if (gameMap.getBackgroundCells()[inCell[0]][inCell[1]].getStatus().equals("grown")) pickupPlant();
     }
 
     public void eatIfPossible() {
         BackgroundCell actualCell = gameMap.getBackgroundCells()[inCell[0]][inCell[1]];
-        if (actualCell.getStatus().equals("grown") || actualCell.getStatus().equals("planted")) harvest();
+        if (actualCell.getStatus().equals("grown") || actualCell.getStatus().equals("planted")) pickupPlant();
     }
 
-    private void harvest() {
+    private void pickupPlant() {
         int plantIndex = findPlantToHarvest();
         if (plantIndex != -1) {
             Plant.removePlant(plantIndex);
@@ -155,14 +156,13 @@ abstract class Character {
             cell.setImage("assets/environment/emptyCell.jpg");
             cell.setStatus("empty");
         }
-
     }
 
     private int findPlantToHarvest() {
         int index = 0;
         Plant plant;
-        while (index < Plant.plantedPlants.size()) {
-            plant = Plant.plantedPlants.get(index);
+        while (index < Plant.getPlantedPlants().size()) {
+            plant = Plant.getPlantedPlants().get(index);
             if (plant.getInCell()[0] == inCell[0] && plant.getInCell()[1] == inCell[1]) return index;
             index++;
         }

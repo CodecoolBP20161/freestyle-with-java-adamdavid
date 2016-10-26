@@ -90,26 +90,9 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g2d.drawImage(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), this);
 
         // test rows
-//        g.setFont(new Font("arial", Font.PLAIN, 14));
-//        g.drawString("cell: " + player.getInCell()[0] + " " + player.getInCell()[1], 600, 25);
-//        g.drawString("planting: " + player.isPlanting(), 600, 50);
-//        g.drawString("left: " + player.isLeft(), 600, 75);
-//        g.drawString("right: " + player.isRight(), 600, 100);
-//        g.drawString("up: " + player.isUp(), 600, 125);
-//        g.drawString("down: " + player.isDown(), 600, 150);
 //        g.setColor(Color.red);
-//        g.drawString("enemy speed: " + enemy.getOwnSpeed(), 600, 400);
-//        g.drawString("enemy stepcounter: " + enemy.stepCounter, 600, 450);
-//        g.drawString("enemy left: " + enemy.isLeft(), 600, 500);
-//        g.drawString("enemy right: " + enemy.isRight(), 600, 550);
-//        g.drawString("image width: " + enemy.getCharacterImage().getWidth(null), 600, 200);
-//        if (Plant.plantedPlants.size() > 0) {
-//            g.drawString("plantstatus: " + Plant.plantedPlants.get(0).getStatus(), 600, 175);
-//            g.drawString("plantcounter: " + Plant.plantedPlants.get(0).getGrowingCounter(), 600, 20);
-//            g.drawString("plantcellx: " + Plant.plantedPlants.get(0).getInCell()[0], 600, 225);
-//            g.drawString("plantcelly: " + Plant.plantedPlants.get(0).getInCell()[1], 600, 250);
-//            g.drawString("plantcelly: " + System.currentTimeMillis(), 600, 300);
-//        }
+//        g.setFont(new Font("arial", Font.PLAIN, 14));
+//        g.drawString("right: " + player.isRight(), 600, 100);
 
         Toolkit.getDefaultToolkit().sync();
     }

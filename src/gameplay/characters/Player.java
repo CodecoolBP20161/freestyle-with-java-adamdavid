@@ -12,7 +12,6 @@ import java.lang.*;
 public class Player extends Character {
 
 
-    private int stepCounter = 0;
     private int plantingCounter = 1;
     private boolean planting = false;
     private long plantingStartTime = 0;
@@ -40,34 +39,23 @@ public class Player extends Character {
         this.plantingFrames = rightPlantingFrames;
     }
 
-    public boolean isPlanting() {
-        return planting;
-    }
-
-    public int getRecentPlantingFrameIndex() {
-        return recentPlantingFrameIndex;
-    }
 
     public void moving() {
         if (stepCounter == 3) {
             shiftMovementFrame();
             stepCounter = 0;
         }
-        if (!leftEdgeCollision() && left && !up && !down) posX -= speed;
-        else if (!leftEdgeCollision() && left) posX -= (int) Math.ceil((double) speed / Math.sqrt(2));
+        if (!leftEdgeCollision() && left) posX -= speed;
         else if (leftEdgeCollision()) posX = 0;
 
-        if (!rightEdgeCollision() && right && !up && !down) posX += speed;
-        else if (!rightEdgeCollision() && right) posX += (int) Math.ceil((double) speed /  Math.sqrt(2));
+        if (!rightEdgeCollision() && right) posX += speed;
         else if (rightEdgeCollision()) posX = gameMap.getWindowWidth() - characterImage.getWidth(null);
 
 
-        if (!topEdgeCollision() && up && !left && !right) posY -= speed;
-        else if (!topEdgeCollision() && up) posY -= (int) Math.ceil((double) speed /  Math.sqrt(2));
+        if (!topEdgeCollision() && up) posY -= speed;
         else if (topEdgeCollision()) posY = 0;
 
-        if (!bottomEdgeCollision() && down && !left && !right) posY += speed;
-        else if (!bottomEdgeCollision() && down) posY += (int) Math.ceil((double) speed /  Math.sqrt(2));
+        if (!bottomEdgeCollision() && down) posY += speed;
         else if (bottomEdgeCollision()) posY = gameMap.getWindowHeight() - (characterImage.getHeight(null) + 5);
 
         if (left || right || up || down) stepCounter++;
