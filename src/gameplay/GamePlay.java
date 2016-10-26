@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.characters.Enemy;
 import gameplay.characters.Player;
 import gameplay.environment.GameMap;
 import gameplay.environment.Plant;
@@ -10,14 +11,13 @@ import java.awt.event.*;
 
 
 public class GamePlay extends JPanel implements KeyListener, ActionListener {
-    private Timer timer;
-    private int delay;
     private Player player;
+    private Enemy enemy;
     private GameMap gameMap;
 
 
     public GamePlay(int windowWidth, int windowHeight){
-        this.delay = 40;
+
         this.gameMap = GameMap.getInstance(windowWidth, windowHeight);
 
         // sprite images
@@ -43,14 +43,35 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 "assets/characters/right_duck/harvesting03.png"
         };
 
+        // make player object
         this.player = new Player(gameMap.getBackgroundCells()[5][5].getPosX(),
                 gameMap.getBackgroundCells()[5][5].getPosY(), 10, 5, 5,
                 leftSprites, rightSprites,
                 leftPlantingSprites, rightPlantingSprites);
+
+
+        String[] rightEnemySprites = new String[]
+                {
+                        "assets/characters/drugSlugRight.png",
+                        "assets/characters/drugSlugRight2.png"
+                };
+        String[] leftEnemySprites = new String[]
+                {
+                        "assets/characters/drugSlugLeft.png",
+                        "assets/characters/drugSlugLeft2.png"
+                };
+        //make enemy
+        this.enemy  = new Enemy(this.player,
+                gameMap.getBackgroundCells()[0][0].getPosX(),
+                gameMap.getBackgroundCells()[0][0].getPosY(),
+                1, 0, 0,
+                leftEnemySprites, rightEnemySprites);
+
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        this.timer = new Timer(delay, this);
+        int delay = 40;
+        Timer timer = new Timer(delay, this);
         timer.start();
     }
 
@@ -64,26 +85,31 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 gameMap.getWindowWidth(), gameMap.getWindowHeight(), this);
         gameMap.drawMap(g2d, this);
 
-        // draw the player
+        // draw the player and enemy
         g2d.drawImage(player.getCharacterImage(), player.getPosX(), player.getPosY(), this);
+        g2d.drawImage(enemy.getCharacterImage(), enemy.getPosX(), enemy.getPosY(), this);
 
         // test rows
-        g.setFont(new Font("arial", Font.PLAIN, 14));
-        g.drawString("cell: " + player.getInCell()[0] + " " + player.getInCell()[1], 600, 25);
-        g.drawString("planting: " + player.isPlanting(), 600, 50);
-        g.drawString("left: " + player.isLeft(), 600, 75);
-        g.drawString("right: " + player.isRight(), 600, 100);
-        g.drawString("up: " + player.isUp(), 600, 125);
-        g.drawString("down: " + player.isDown(), 600, 150);
-        g.setColor(Color.red);
-        g.drawString("index: " + player.getRecentPlantingFrameIndex(), 600, 400);
-        if (Plant.plantedPlants.size() > 0) {
-            g.drawString("plantstatus: " + Plant.plantedPlants.get(0).getStatus(), 600, 175);
-            g.drawString("plantcounter: " + Plant.plantedPlants.get(0).getGrowingCounter(), 600, 20);
-            g.drawString("plantcellx: " + Plant.plantedPlants.get(0).getInCell()[0], 600, 225);
-            g.drawString("plantcelly: " + Plant.plantedPlants.get(0).getInCell()[1], 600, 250);
-            g.drawString("plantcelly: " + System.currentTimeMillis(), 600, 300);
-        }
+//        g.setFont(new Font("arial", Font.PLAIN, 14));
+//        g.drawString("cell: " + player.getInCell()[0] + " " + player.getInCell()[1], 600, 25);
+//        g.drawString("planting: " + player.isPlanting(), 600, 50);
+//        g.drawString("left: " + player.isLeft(), 600, 75);
+//        g.drawString("right: " + player.isRight(), 600, 100);
+//        g.drawString("up: " + player.isUp(), 600, 125);
+//        g.drawString("down: " + player.isDown(), 600, 150);
+//        g.setColor(Color.red);
+//        g.drawString("enemy speed: " + enemy.getOwnSpeed(), 600, 400);
+//        g.drawString("enemy stepcounter: " + enemy.stepCounter, 600, 450);
+//        g.drawString("enemy left: " + enemy.isLeft(), 600, 500);
+//        g.drawString("enemy right: " + enemy.isRight(), 600, 550);
+//        g.drawString("image width: " + enemy.getCharacterImage().getWidth(null), 600, 200);
+//        if (Plant.plantedPlants.size() > 0) {
+//            g.drawString("plantstatus: " + Plant.plantedPlants.get(0).getStatus(), 600, 175);
+//            g.drawString("plantcounter: " + Plant.plantedPlants.get(0).getGrowingCounter(), 600, 20);
+//            g.drawString("plantcellx: " + Plant.plantedPlants.get(0).getInCell()[0], 600, 225);
+//            g.drawString("plantcelly: " + Plant.plantedPlants.get(0).getInCell()[1], 600, 250);
+//            g.drawString("plantcelly: " + System.currentTimeMillis(), 600, 300);
+//        }
 
         Toolkit.getDefaultToolkit().sync();
     }
@@ -92,11 +118,16 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.moving();
+        enemy.moving();
         player.directionCheck();
+        enemy.directionCheck();
         player.checkPosition();
+        enemy.checkPosition();
         player.plantingDirectionCheck();
+
         Plant.growingPlants();
-        player.harvestIfCould();
+        player.harvestIfPossible();
+        enemy.eatIfPossible();
         repaint();
     }
 
