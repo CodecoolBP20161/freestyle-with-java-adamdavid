@@ -11,7 +11,7 @@ public class Enemy extends Character{
         this.ownSpeed = speed;
         this.player = player;
     }
-    
+
     public void moving() {
         if (stepCounter == 5){
             shiftMovementFrame();

@@ -164,4 +164,10 @@ public class Player extends Character {
         planting = false;
         plantingStartTime = 0;
     }
+
+    public void checkDeath(Character enemy, int border) {
+        if (collideWithAnotherCharacter(enemy, border)) {
+            System.exit(0);
+        }
+    }
 }

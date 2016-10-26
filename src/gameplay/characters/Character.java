@@ -168,4 +168,15 @@ abstract class Character {
         }
         return -1;
     }
+
+    boolean collideWithAnotherCharacter(Character character, int border) {
+        boolean statementUp = posY + characterImage.getHeight(null) - border < character.posY;
+        boolean statementDown = posY > character.posY + character.getCharacterImage().getHeight(null) - border;
+        boolean statementLeft = posX + characterImage.getWidth(null) - border < character.posX;
+        boolean statementRight = posX > character.posX + character.getCharacterImage().getWidth(null) - border;
+
+        return !(statementUp || statementDown || statementLeft || statementRight);
+    }
+
+
 }
